@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -37,6 +36,7 @@ func Execute() {
 }
 
 func init() {
+	log.Print("init")
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
@@ -61,14 +61,13 @@ func initConfig() {
 		viper.SetConfigFile(cfgFile)
 	} else {
 		// Find home directory.
-		home, err := homedir.Dir()
+		home, err := os.Getwd()
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		// Search config in home directory with name ".go-base" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".viewee-service")
+		viper.SetConfigName("viewee-service")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
