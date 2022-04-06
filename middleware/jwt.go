@@ -59,7 +59,7 @@ var (
 	SignKey          string = "newtrekWang"
 )
 
-// 载荷，可以加一些自己需要的信息
+// JWTClaims payload interface
 type JWTClaims struct {
 	ID       string `json:"id"`
 	UserName string `json:"username"`
@@ -91,7 +91,9 @@ func (j *JWT) ParseToken(tokenString string) (*JWTClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return j.SigningKey, nil
 	})
+
 	if err != nil {
+		log.Print("parse error: ", err)
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
 				return nil, TokenMalformed

@@ -1,9 +1,9 @@
-package api
+package service
 
 import (
+	// "encoding/base64"
 	"net/http"
 	"time"
-
 	mw "viewee-service/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +26,7 @@ func Login(c *gin.Context) {
 	// if c.BindJSON(&loginReq) == nil {
 	//     isPass, user, err := model.LoginCheck(loginReq)
 	//     if isPass {
-	token, err := generateToken(c, user)
+	token, err := generateToken(user)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": -1,
@@ -34,7 +34,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-
+	// base64.URLEncoding.EncodeToString([]byte())
 	data := LoginResult{
 		User:  user,
 		Token: token,
@@ -65,9 +65,9 @@ type LoginResult struct {
 	User  LoginInfo
 }
 
-func generateToken(c *gin.Context, user LoginInfo) (string, error) {
+func generateToken(user LoginInfo) (string, error) {
 	j := &mw.JWT{
-		SigningKey: []byte("xxx"),
+		SigningKey: []byte("newtrekWang"),
 	}
 
 	claims := mw.JWTClaims{

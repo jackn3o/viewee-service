@@ -1,7 +1,7 @@
 package command
 
 import (
-	"viewee-service/api"
+	"viewee-service/service"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -13,7 +13,7 @@ var serveCmd = &cobra.Command{
 	Short: "start http server with configured api",
 	Long:  `Starts a http server and serves the configured api`,
 	Run: func(cmd *cobra.Command, args []string) {
-		server := api.NewServer()
+		server := service.NewServer()
 		server.Run(viper.GetString("port"))
 	},
 }

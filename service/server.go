@@ -1,10 +1,10 @@
-package api
+package service
 
 import (
 	"log"
 	"time"
 
-	"viewee-service/middleware"
+	mw "viewee-service/middleware"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -38,9 +38,17 @@ func initializeRoutes(r *gin.Engine) *gin.Engine {
 		})
 	})
 
-	jwtMw := middleware.JWTAuth()
+	r.POST("/login", func(c *gin.Context) {
+		Login(c)
+	})
+
+	jwtMw := mw.JWTAuth()
 	test := r.Group("/test")
 	test.Use(jwtMw)
+
+	test.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "Hello from private"})
+	})
 
 	return r
 }
